@@ -1,0 +1,15 @@
+*  {
+    background-color: black;
+    color: gray;
+    user-select: none;
+}
+
+.navBtns:hover {
+    color: white;
+    cursor: pointer;
+}
+
+#display {
+    width: 100%;
+    /* background-color: red; */
+}
