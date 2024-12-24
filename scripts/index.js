@@ -1,7 +1,7 @@
 const navBtns = document.getElementsByClassName("navBtns");
 const navbar = document.getElementById("navbar");
 
-const homeList = ["home"];
+const homeList = ["home", []];
 
 const appList = [
   "apps",
@@ -43,82 +43,63 @@ const gamesList = [
     heigh: 800,
   },
 ];
-const aboutList = ["about"];
-const contactList = ["contact"];
 
-const menuItemContentInformation = `<a href=${appList[1].link} onclick="window.open(this.href, 'newwindow', 'width=${appList[1].width},height=${appList[1].height}'); return false;">Bathroom Helper</a>`;
+const aboutList = ["about", []];
+const contactList = ["contact", []];
+
+// const menuItemContentInformation = `<a href=${appList[1].link} onclick="window.open(this.href, 'newwindow', 'width=${appList[1].width},height=${appList[1].height}'); return false;">Bathroom Helper</a>`;
+
 const navMenuItems = [
-  "navbar",
+  "navbarContent",
   [homeList, appList, gamesList, aboutList, contactList],
   // [appList, gamesList, aboutList, contactList],
 ];
 
-populateMenu(navBtns, navMenuItems[0], navMenuItems[1]);
+populateMenu("navbar", navMenuItems[0], navMenuItems[1]);
 
-function populateMenu(
-  existingMenuItemsToCycleThrough,
-  node,
-  menuItemsContentArray
-) {
-  const nodeToAppend = document.getElementById(node);
-  for (let i = 0; i < existingMenuItemsToCycleThrough.length; i++) {
-    existingMenuItemsToCycleThrough[i].addEventListener("click", () => {
-      const oldDisplay = document.getElementById("display");
-      oldDisplay?.remove();
+function populateMenu(parentNode, childNodeName, menuItemsContentArray) {
+  const childNode = document.createElement("div");
+  childNode.id = childNodeName;
 
-      const display = document.createElement("div");
-      display.id = "display";
-
-      for (let j = 0; j < menuItemsContentArray[i].length; j++) {
-        console.log("menuItemsContentArray[i]: ", menuItemsContentArray[i]);
-        console.log(
-          "menuItemsContentArray[i][j]: ",
-          menuItemsContentArray[i][j]
-        );
-        for (let k = 0; k < menuItemsContentArray[i][j].length; k++) {
-          // for (let k = 0; k < menuItemsContentArray[i][j].length; k++) {
-          //   const menuItem = menuItemsContentArray[j];
-        //   console.log("K: ",k)
-        //   console.log(menuItemsContentArray[i][j])
-          const item = document.createElement("div");
-          item.textContent = menuItemsContentArray[i][j][k].name;
-        // item.textContent = menuItemsContentArray[i][k].name;
-          item.className = "menuItems";
-          item.id = `${(i, j, k)}`;
-          item.addEventListener("click", () => {
-            document.getElementById("descriptionSection")?.remove();
-
-            const descriptionSection = document.createElement("div");
-            descriptionSection.id = "descriptionSection";
-            descriptionSection.textContent =
-              menuItemsContentArray[i][j][k].description;
-            item.append(descriptionSection);
-
-            const link = document.createElement("a");
-            link.id = "urlLink";
-            link.href = menuItemsContentArray[i][j][k].link;
-            link.textContent = `${menuItemsContentArray[i][j][k].name} Link`;
-            link.target = "_blank";
-            document.getElementById("urlLink")?.remove();
-            item.after(link);
-          });
-          //   item.addEventListener("click", () => {
-          //     const oldItems = document.getElementsByClassName("menuItems")
-          //     for (let k = 0; k < oldItems.length; k++) {
-          //         console.log(oldItems[k])
-          //         const child = document.getElementById("active")
-          //         oldItems[k].removeChild(child)
-          //     }
-
-          //     const itemDescription = document.createElement("div");
-          //     itemDescription.textContent = menuItem[j].description;
-          //     itemDescription.id = "active"
-          //     item.after(itemDescription);
-          //   });
-          display.append(item);
-        }
-      }
-      nodeToAppend.after(display);
+  for (let i = 0; i < menuItemsContentArray.length; i++) {
+    const item = document.createElement("div");
+    item.className = `${childNodeName}_items`;
+    item.textContent = menuItemsContentArray[i][0];
+    item.addEventListener("click", () => {
+      populateMenuSubItems(item, menuItemsContentArray[i][1]);
     });
+    childNode.append(item);
+  }
+
+  document.getElementById(parentNode).append(childNode);
+}
+
+function populateMenuSubItems(item, array) {
+  const children = document.getElementsByClassName(
+    `${item.className}_children`
+  );
+
+  console.log(children, children.length);
+
+  for (let i = children.length; i >= 0; i--) {
+    children[i]?.remove();
+  }
+
+  for (let i = 0; i < array.length; i++) {
+    // console.log("item:",item)
+    const menuSubItem = document.createElement("a");
+    menuSubItem.href = array[i].link;
+    menuSubItem.addEventListener("click", () => {
+      window.open(
+        this.href,
+        "newwindow",
+        `width=${array[i].width},height=${array[i].height}`
+      );
+      return false;
+    });
+
+    menuSubItem.textContent = array[i].name;
+    menuSubItem.className = `${item.className}_children`;
+    item.after(menuSubItem);
   }
 }
