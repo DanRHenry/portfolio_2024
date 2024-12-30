@@ -100,4 +100,33 @@
 
 #contentImage {
   margin-top: 1em;
+  width: 100%;
+}
+
+#appBtnDiv {
+    text-align: center;
+}
+
+button {
+    margin-top: 1em;
+    background-color: gray;
+    color: white;
+    border-bottom-color: rgb(110, 109, 109);
+    border-right-color: rgb(110, 109, 109);
+    border-left-color: rgb(232, 232, 232);
+    border-top-color: rgb(232, 232, 232);
+}
+
+button:hover{
+    background-color: rgb(101, 101, 101);
+    color: white;
+    border-top-color: rgb(232, 232, 232);
+    border-left-color: rgb(232, 232, 232);
+}
+
+button:active {
+    border-top-color: rgb(110, 109, 109);
+    border-left-color: rgb(110, 109, 109);
+    border-bottom-color: rgb(232, 232, 232);
+    border-right-color: rgb(232, 232, 232);
 }

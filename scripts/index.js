@@ -12,7 +12,7 @@ const appList = [
         "This is one of my favorites, because of its simplicity. \nThis simple website is used in a high school setting to help with bathroom monitoring.\nTo prevent screen burn-in on OLED displays, I used a random vertical positioning variable.",
       link: "https://danhenrydev.com/bathroom_helper/index.html",
       image: {
-        URL: "",
+        URL: "../media/Bathroom Helper.png",
         altText: "Bathroom Helper Image",
       },
       width: 1000,
@@ -23,7 +23,7 @@ const appList = [
       description: "",
       link: "https://danhenrydev.com/apps/shoppingList/client/index.html",
       image: {
-        URL: "",
+        URL: "../media/Meal Planner.png",
         altText: "Meal Planner Image",
       },
       width: 1000,
@@ -40,7 +40,7 @@ const gamesList = [
       description:
         "This project began as a jeopardy clone, and expanded into a full-stack app that uses Websockets to create real-time cooperative gameplay, and an interface where teachers can create categories, questions and answers, and assign games to classes and units for their lesson planning.",
       image: {
-        URL: "",
+        URL: "../media/Jeopardy.png",
         altText: "Jeopardy Game Image",
       },
       link: "https://danhenrydev.com/projects/jeopardy/client/index.html",
@@ -52,31 +52,31 @@ const gamesList = [
       description:
         "Zorkington began as a terminal-based Zork clone, that I later expanded to an interactive web app.",
       image: {
-        URL: "",
+        URL: "../media/Zorkington.png",
         altText: "Zorkington Game Image",
       },
       link: "https://danhenrydev.com/projects/zorkington/index.html",
       width: 1000,
       heigh: 800,
     },
-    {
-      name: "Battleship",
-      description:
-        "I wrote a version of Battleship to get more practice working with Websocket technology, in order to let two players play head-to-head, in real time.",
-      image: {
-        URL: "",
-        altText: "Battleship Game Image",
-      },
-      link: "https://danhenrydev.com/projects/battleship/index.html",
-      width: 1000,
-      heigh: 800,
-    },
+    // {
+    //   name: "Battleship",
+    //   description:
+    //     "I wrote a version of Battleship to get more practice working with Websocket technology, in order to let two players play head-to-head, in real time.",
+    //   image: {
+    //     URL: "",
+    //     altText: "Battleship Game Image",
+    //   },
+    //   link: "https://danhenrydev.com/projects/battleship/index.html",
+    //   width: 1000,
+    //   heigh: 800,
+    // },
     {
       name: "Scrabble",
       description:
         "I began writing this game after a couple months of learning HTML, CSS, and a little JavaScript. While I did expand on ideas learned from other past projects, this was the first project I created on my own.",
       image: {
-        URL: "",
+        URL: "../media/Scrabble.png",
         altText: "Scrabble Game Image",
       },
       link: "https://danhenrydev.com/projects/scrabble/index.html",
@@ -128,10 +128,11 @@ function populateMenuSubItems(item, array) {
   }
 
   for (let i = 0; i < array.length; i++) {
-    const menuSubItem = document.createElement("a");
-    menuSubItem.href = array[i].link;
-    menuSubItem.target = "_blank";
-    menuSubItem.addEventListener("mouseover", () => {
+    const menuSubItem = document.createElement("div");
+    // menuSubItem.href = array[i].link;
+    // menuSubItem.target = "_blank";
+
+    menuSubItem.addEventListener("click", () => {
       document.getElementById("contentImage")?.remove();
       const descriptionWindow = document.getElementById("descriptionWindow");
       descriptionWindow.textContent = "";
@@ -143,14 +144,28 @@ function populateMenuSubItems(item, array) {
       const br = document.createElement("br");
       descriptionWindow.append(br);
       descriptionWindow.append(image);
-    });
-    menuSubItem.addEventListener("click", () => {
+
+    const appBtn = document.createElement("button");
+    appBtn.textContent = "Open";
+    appBtn.id = "appBtn";
+
+    appBtn.addEventListener("click", () => {
       window.open(
-        (this.href = menuSubItem.href),
+        (this.href = array[i].link),
         "newwindow",
         `width=${array[i].width},height=${array[i].height}`
       );
       return false;
+    });
+
+    const appBtnDiv = document.createElement("div")
+    appBtnDiv.id = "appBtnDiv"
+    document.getElementById("appBtnDiv")?.remove()
+
+    appBtnDiv.appendChild(appBtn)
+
+    descriptionWindow.after(appBtnDiv);
+
     });
 
     menuSubItem.textContent = array[i].name;
