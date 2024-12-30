@@ -11,6 +11,10 @@ const appList = [
       description:
         "This is one of my favorites, because of its simplicity. \nThis simple website is used in a high school setting to help with bathroom monitoring.\nTo prevent screen burn-in on OLED displays, I used a random vertical positioning variable.",
       link: "https://danhenrydev.com/bathroom_helper/index.html",
+      image: {
+        URL: "",
+        altText: "Bathroom Helper Image",
+      },
       width: 1000,
       height: 800,
     },
@@ -18,6 +22,10 @@ const appList = [
       name: "Meal Planner",
       description: "",
       link: "https://danhenrydev.com/apps/shoppingList/client/index.html",
+      image: {
+        URL: "",
+        altText: "Meal Planner Image",
+      },
       width: 1000,
       height: 800,
     },
@@ -26,72 +34,119 @@ const appList = [
 
 const gamesList = [
   "games",
-  {
-    name: "Jeopardy",
-    description:
-      "This project began as a jeopardy clone, and expanded into a full-stack app that uses Websockets to create real-time cooperative gameplay, and an interface where teachers can create categories, questions and answers, and assign games to classes and units for their lesson planning.",
-    link: "https://danhenrydev.com/apps/jeopardy/client/index.html",
-    width: 1000,
-    height: 800,
-  },
-  {
-    name: "Zorkington",
-    description:
-      "Zorkington began as a terminal-based Zork clone, that I later expanded to an interactive web app.",
-    link: "https://danhenrydev.com/apps/zorkington/client/index.html",
-    width: 1000,
-    heigh: 800,
-  },
+  [
+    {
+      name: "Jeopardy",
+      description:
+        "This project began as a jeopardy clone, and expanded into a full-stack app that uses Websockets to create real-time cooperative gameplay, and an interface where teachers can create categories, questions and answers, and assign games to classes and units for their lesson planning.",
+      image: {
+        URL: "",
+        altText: "Jeopardy Game Image",
+      },
+      link: "https://danhenrydev.com/projects/jeopardy/client/index.html",
+      width: 1000,
+      height: 800,
+    },
+    {
+      name: "Zorkington",
+      description:
+        "Zorkington began as a terminal-based Zork clone, that I later expanded to an interactive web app.",
+      image: {
+        URL: "",
+        altText: "Zorkington Game Image",
+      },
+      link: "https://danhenrydev.com/projects/zorkington/index.html",
+      width: 1000,
+      heigh: 800,
+    },
+    {
+      name: "Battleship",
+      description:
+        "I wrote a version of Battleship to get more practice working with Websocket technology, in order to let two players play head-to-head, in real time.",
+      image: {
+        URL: "",
+        altText: "Battleship Game Image",
+      },
+      link: "https://danhenrydev.com/projects/battleship/index.html",
+      width: 1000,
+      heigh: 800,
+    },
+    {
+      name: "Scrabble",
+      description:
+        "I began writing this game after a couple months of learning HTML, CSS, and a little JavaScript. While I did expand on ideas learned from other past projects, this was the first project I created on my own.",
+      image: {
+        URL: "",
+        altText: "Scrabble Game Image",
+      },
+      link: "https://danhenrydev.com/projects/scrabble/index.html",
+      width: 1000,
+      heigh: 800,
+    },
+  ],
 ];
 
 const aboutList = ["about", []];
 const contactList = ["contact", []];
 
-// const menuItemContentInformation = `<a href=${appList[1].link} onclick="window.open(this.href, 'newwindow', 'width=${appList[1].width},height=${appList[1].height}'); return false;">Bathroom Helper</a>`;
+const navMenuItems = ["navbar", [appList, gamesList, aboutList, contactList]];
 
-const navMenuItems = [
-  "navbarContent",
-  [homeList, appList, gamesList, aboutList, contactList],
-  // [appList, gamesList, aboutList, contactList],
-];
-
-populateMenu("navbar", navMenuItems[0], navMenuItems[1]);
+populateMenu("categories", navMenuItems[0], navMenuItems[1]);
 
 function populateMenu(parentNode, childNodeName, menuItemsContentArray) {
-  const childNode = document.createElement("div");
-  childNode.id = childNodeName;
-
   for (let i = 0; i < menuItemsContentArray.length; i++) {
     const item = document.createElement("div");
     item.className = `${childNodeName}_items`;
     item.textContent = menuItemsContentArray[i][0];
+    item.addEventListener("mouseover", () => {
+      const existingItems = document.getElementsByClassName(
+        `${childNodeName}_items`
+      );
+      for (let item of existingItems) {
+        item.style.color = "";
+      }
+
+      item.style.color = "white";
+    });
     item.addEventListener("click", () => {
       populateMenuSubItems(item, menuItemsContentArray[i][1]);
     });
-    childNode.append(item);
+    document.getElementById(parentNode).append(item);
   }
-
-  document.getElementById(parentNode).append(childNode);
 }
 
 function populateMenuSubItems(item, array) {
+  const descriptionWindow = document.getElementById("descriptionWindow");
+  descriptionWindow.textContent = "";
+
   const children = document.getElementsByClassName(
     `${item.className}_children`
   );
-
-  console.log(children, children.length);
 
   for (let i = children.length; i >= 0; i--) {
     children[i]?.remove();
   }
 
   for (let i = 0; i < array.length; i++) {
-    // console.log("item:",item)
     const menuSubItem = document.createElement("a");
     menuSubItem.href = array[i].link;
+    menuSubItem.target = "_blank";
+    menuSubItem.addEventListener("mouseover", () => {
+      document.getElementById("contentImage")?.remove();
+      const descriptionWindow = document.getElementById("descriptionWindow");
+      descriptionWindow.textContent = "";
+      descriptionWindow.textContent = array[i].description;
+      const image = document.createElement("img");
+      image.src = array[i].image.URL;
+      image.alt = array[i].image.altText;
+      image.id = "contentImage";
+      const br = document.createElement("br");
+      descriptionWindow.append(br);
+      descriptionWindow.append(image);
+    });
     menuSubItem.addEventListener("click", () => {
       window.open(
-        this.href,
+        (this.href = menuSubItem.href),
         "newwindow",
         `width=${array[i].width},height=${array[i].height}`
       );
@@ -100,6 +155,8 @@ function populateMenuSubItems(item, array) {
 
     menuSubItem.textContent = array[i].name;
     menuSubItem.className = `${item.className}_children`;
-    item.after(menuSubItem);
+    menuSubItem.style.width = 100;
+
+    document.getElementById("submenu").append(menuSubItem);
   }
 }
