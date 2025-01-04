@@ -7,7 +7,7 @@ const appList = [
   "apps",
   [
     {
-      name: "Bathroom Helper",
+      name: "Bathroom Monitor",
       description:
         "This is one of my favorites, because of its simplicity. \nThis simple website is used in a high school setting to help with bathroom monitoring.\nTo prevent screen burn-in on OLED displays, I used a random vertical positioning variable.",
       link: "https://danhenrydev.com/bathroom_helper/index.html",
@@ -109,6 +109,7 @@ function populateMenu(parentNode, childNodeName, menuItemsContentArray) {
       item.style.color = "white";
     });
     item.addEventListener("click", () => {
+      document.getElementById("appBtnDiv")?.remove()
       populateMenuSubItems(item, menuItemsContentArray[i][1]);
     });
     document.getElementById(parentNode).append(item);
